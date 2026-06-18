@@ -7,5 +7,7 @@ It simply queries you on the next move and reprints the board in plain text. Ple
 
 | Command       | Action                                          |
 | ------------- | ----------------------------------------------- |
-| flag 'c' 'r'  | Toggle the flag in position column (c) row (r)  |
 | sweep 'c' 'r' | "Click" the cell in position column (c) row (r) |
+| flag 'c' 'r'  | Toggle the flag in position column (c) row (r)  |
+| s 'c' 'r'     | Shorthand version of sweep                      |
+| f 'c' 'r'     | Shorthand version of flag                       |
