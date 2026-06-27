@@ -106,7 +106,6 @@ local win
 
 clear_screen()
 
--- TODO: Detect winning scenario (probably should be told to us by logic)
 repeat
 	clear_screen()
 	io.write('  Lua Minesweeper\n\n')
