@@ -2,9 +2,12 @@
 
 This is my attempt at using Lua to make the classic game Minesweeper for as many platforms as I can.
 
-## Supported Platforms
+## Platforms
 
-- Plain Lua for the console
+- Plain Lua via CLI
+
+### Intended Platforms
+
 - Desktop/Mobile via LÖVE
 - PS2 via Enceladus
 - Wii via LuafWii or Wiilove
@@ -22,19 +25,18 @@ There is a Makeile which makes the release folders that are ready to run on each
 
 ## Platforms I might add
 
-- TUI (library not chosen yet)
-- ROBLOX
 - Dreamcast via ANTIRUINS
+- ROBLOX
 - PSP via Lua Player Plus PSP
 - REAPER
 - PICO-8
 - (Neo)Vim
 
-### May have to make my own LuaPlayer for these:
+### May have to make my own LuaPlayer?
 
 - PlayStation (with PSn00bSDK?)
 - Nintendo 64
-- GameCube 
+- GameCube
 - MegaDrive (maybe a *very* slimmed down LuaPlayer can be made with Marsdev/SGDK?)
 - SNES via PVSnesLib
 
