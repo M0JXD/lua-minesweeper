@@ -115,6 +115,9 @@ repeat
 until type == 'q' or win
 
 if win then
+	clear_screen()
+	io.write('  Lua Minesweeper\n\n')
+	plot_cells(columns, rows, board)
 	io.write('\nYou won! :)\n ')
 else
 	io.write('\nQuitting Lua Minesweeper, goodbye!\n ')
