@@ -2,6 +2,7 @@
 -- TODO: Utilise Terminal colours?
 
 local swpr = require('logic')
+local colors = require('ansicolors')
 local markers = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ$%&!'
 
 local function clear_screen()
@@ -27,20 +28,36 @@ local function plot_cells(x, y, board)
 	local fail = false
 	local top_ref = y > 9 and '  ' or ' '
 	for i = 1, x do top_ref = top_ref .. ' ' .. markers:sub(i, i) end
-	io.write(top_ref .. '\n')
+	io.write(colors('%{dim}' ..top_ref) .. '\n')
 
 	for i = 1, y do
-		local row = ((i < 10 and y > 9) and ' ' or '') .. i .. ' '
+		local row = ((i < 10 and y > 9) and ' ' or '') .. colors('%{dim}' .. i) .. ' '
 		for k = 1, x do
 			if board[k][i] == nil then
-				row = row .. '# '
+				row = row .. colors('%{bright}#') .. ' '
 			elseif board[k][i] == 0 then
-				row = row .. '. '
+				row = row .. colors('%{dim}.') .. ' '
 			elseif board[k][i] == 'M' then
 				fail = true
-				row = row .. '* '
-			else
-				row = row .. board[k][i] .. ' '
+				row = row .. colors('%{bright red}*') .. ' '
+			elseif board[k][i] == 1 then
+				row = row .. colors('%{blue}1') .. ' '
+			elseif board[k][i] == 2 then
+				row = row .. colors('%{green}2') .. ' '
+			elseif board[k][i] == 3 then
+				row = row .. colors('%{yellow}3') .. ' '
+			elseif board[k][i] == 4 then
+				row = row .. colors('%{blue}4') .. ' '
+			elseif board[k][i] == 5 then
+				row = row .. colors('%{red}5') .. ' '
+			elseif board[k][i] == 6 then
+				row = row .. colors('%{cyan}6') .. ' '
+			elseif board[k][i] == 7 then
+				row = row .. colors('%{magenta}7') .. ' '
+			elseif board[k][i] == 8 then
+				row = row .. colors('%{dim white}8') .. ' '
+			elseif board[k][i] == 'F' then
+				row = row .. colors('%{bright yellow}F') .. ' '
 			end
 		end
 		io.write(row .. '\n')
@@ -87,10 +104,7 @@ io.write('\nEnter your first move: ')
 local valid = false
 repeat
 	local mv_x, mv_y, type = interpret_move(io.read())
-	if type == 'flag' then
-		board = swpr.toggle_flag(mv_x, mv_y)
-		valid = true
-	elseif type == 'sweep' then
+	if type == 'sweep' then
 		board = swpr.setup_game(mv_x, mv_y, mode)
 		valid = true
 	elseif type == 'q' then
