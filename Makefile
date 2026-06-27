@@ -7,7 +7,7 @@ build:
 
 lua: build
 	-mkdir -p build/lua
-	cp src/logic.lua src/platforms/lua/init.lua build/lua
+	cp src/logic.lua src/platforms/lua/minesweeper.lua build/lua
 
 love: build
 

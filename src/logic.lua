@@ -9,86 +9,164 @@ Expert: 30x16 with 99 mines
 -- Board Data --
 
 The main board is represented by a 2D Matrix.
-Each 'cell' may be one the following values:
+Each 'cell' contains a value reprenting what it is:
+
+Internally, it uses:
 
 nil for hidden cell
-A number between 1 and 9 for a revealed cell adjacent to 'n' amount of mines
-0 for a revealed cell with no mine
--1 for a hidden mine
--2 for a user flagged cell with no mine
--3 for a user flagged cell with a mine
+0 for a revealed cell with no adjacent mines
+A number a revealed cell with 'n' adjacent mines
+'F' for a user flagged cell with no mine
+'FM' for a user flagged cell with a mine
+'M' for a  mine
 
-This data can be used to plot after each move.
+Externally, this is simplified to:
+
+nil for a hidden cell
+0 for a revealed cell with no adjacent mines
+A number a revealed cell with 'n' adjacent mines
+'F' for a user flagged cell
+'M' mines upon game failure (user must check if board contains mines)
+
+-- API --
+
+It offers a very simple end user API. All functions return the simplified plottable board.
+
+swpr.get_details(mode) - returns the columns, rows and a blank board (handy for first plots) for a mode.
+swpr.setup_game(x, y, mode) - Sets up a new game based on the mode and first sweep (where a mine must never be)
+swpr.sweep_cell(x, y) - Sweep from the user selected cell
+swpr.toggle_flag(x, y) - Toggle the flag in a position
+swpr.get_board() - Get the internal simplified and easily plottable Minesweeper matrix of just nil, numbers or 'F'
 
 --]]
 
 local M = {}
 
-math.randomseed(os.time())
+-- Internal Data --
 
--- Constants --
-
-M.BEGINNER = 0
-M.INTERMEDIATE = 1
-M.EXPERT = 2
-
-M.REVEALED = 0
-M.MINE = -1
-M.FLAG = -2
-M.MINE_FLAG = -3
+local board = {}
+board.mode = 'beginner'
+board.columns = 8
+board.rows = 8
 
 -- Functions --
 
-function M.is_flagged(board, x, y)
-	return board[x][y] < -1
+function M.get_details(mode)
+	local rows = (mode == 'beginner' or mode == 'b') and 8 or 16
+	local columns = (mode == 'expert' or mode == 'e') and 30 or rows
+	local blank_board = {}
+	for i = 1, columns do blank_board[i] = {} end
+	return columns, rows, blank_board
 end
 
 -- Setup a board based on the first click spot and the game mode
-function M.setup_game(x, y, mode)
-	local rows = mode == M.BEGINNER and 8 or M.INTERMEDIATE and 16 or 30
-	local columns = mode == M.EXPERT and 16 or rows
-	local mines = mode == M.BEGINNER and 10 or M.INTERMEDIATE and 40 or 99
+function M.setup_game(mv_x, mv_y, mode)
+	local columns, rows = M.get_details(mode)
+	local mines = (mode == 'beginner' or mode == 'b') and 10 or
+		(mode == 'intermediate' or mode == 'i') and 40 or 99
 
-	board = {}
-	for x=1, columns do
-		board[i] = {}
-	end
+	for i=1, rows do board[i] = {} end
 
-	-- No goto use as need 5.1 compat
 	local amount = 0
+	math.randomseed(os.time())
 	while true do
 		local x = math.random(1, columns)
 		local y = math.random(1, rows)
-		if not board[x][y] then
-			board[x][y] = M.MINE
+		if not board[x][y] or not x == mv_x or not y == mv_y then
+			board[x][y] = 'M'
 			amount = amount + 1
 		end
 		if amount == mines then break end
 	end
-
-	return board
+	board.mode = mode
+	board.columns = columns
+	board.row = rows
+	M.sweep_cell(mv_x, mv_y)
+	return M.get_board(false)
 end
 
 -- Toggles flag on a cell
-function M.flag_cell(board, x, y)
-	if board[x][y] == M.MINE then
-		board[x][y] = M.MINE_FLAG
-	elseif board[x][y] == M.FLAG then
+function M.toggle_flag(x, y)
+	if board[x][y] == 'M' then
+		board[x][y] = 'FM'
+	elseif board[x][y] == 'F' then
 		board[x][y] = nil
-	elseif board[x][y] == M.MINE_FLAG then
-		board[x][y] = M.MINE
+	elseif board[x][y] == 'FM' then
+		board[x][y] = 'M'
 	else -- must be a nil cell
-		board[x][y] = M.FLAG
+		board[x][y] = 'F'
 	end
-	return board
+	return M.get_board(false)
 end
 
-function M.click_cell(board, x, y)
-	if board[x][y] == M.MINE then
-		return 'LOST'
+-- Choose a cell to "sweep"
+function M.sweep_cell(x, y)
+	if board[x][y] == 'M' then
+		return M.get_board(true)
 	elseif board[x][y] == nil then
-		-- I need some kind of recursive algo here
+		local count = 0
+		-- LuaFormatter off
+		-- Check if any surrounding mines
+		-- North-West
+		if x-1 > 0 and y-1 > 0 then if board[x-1][y-1] == 'M' then count = count + 1 end end
+		-- North
+		if y-1 > 0 then if board[x][y-1] == 'M' then count = count + 1 end end
+		-- North-East
+		if x+1 <= board.columns and y-1 > 0 then if board[x+1][y-1] == 'M' then count = count + 1 end end
+		-- East
+		if x+1 <= board.columns then if board[x+1][y] == 'M' then count = count + 1 end end
+		-- South-East
+		if x+1 <= board.columns  and y+1 <= board.rows then if board[x+1][y+1] == 'M' then count = count + 1 end end
+		-- South
+		if y+1 <= board.rows then if board[x][y+1] == 'M' then count = count + 1 end end
+		-- South-West
+		if x-1 > 0 and y+1 <= board.rows then if board[x-1][y+1] == 'M' then count = count + 1 end end
+		-- West
+		if x-1 > 0 then if board[x-1][y] == 'M' then count = count + 1 end end
+
+		board[x][y] = count
+		-- If none, call the next ones to be revealed...
+		if count == 0 then
+			-- North-West
+			if x-1 > 0 and y-1 > 0 then M.sweep_cell(x-1, y-1) end
+			-- North
+			if y-1 > 0 then M.sweep_cell(x, y-1) end
+			-- North-East
+			if x+1 <= board.columns and y-1 > 0 then M.sweep_cell(x+1, y-1) end
+			-- East
+			if x+1 <= board.columns then M.sweep_cell(x+1,y) end
+			-- South-East
+			if x+1 <= board.columns  and y+1 <= board.rows then M.sweep_cell(x+1, y+1) end
+			-- South
+			if y+1 <= board.rows then M.sweep_cell(x,y+1) end
+			-- South-West
+			if x-1 > 0 and y+1 <= board.rows then M.sweep_cell(x-1, y+1) end
+			-- West
+			if x-1 > 0 then M.sweep_cell(x-1, y) end
+		end
+		-- LuaFormatter on
 	end
+	return M.get_board(false)
+end
+
+-- Returns the board for plotting by losing mine data
+function M.get_board(hit_mine)
+	local col, row, simple_board = M.get_details(board.mode)
+	for i=1, row do
+		for k=1, col do
+			print(k, i)
+			if board[k][i] == 'FM' or board[k][i] == 'F' then
+				simple_board[k][i] = 'F'
+			elseif hit_mine and board[k][i] == 'M' then
+				simple_board[k][i] = 'M'
+			elseif not hit_mine and board[k][i] == 'M' then
+				simple_board[k][i] = nil
+			else
+				simple_board[k][i] = board[k][i]
+			end
+		end
+	end
+	return simple_board
 end
 
 return M
