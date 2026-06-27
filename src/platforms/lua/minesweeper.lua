@@ -11,7 +11,6 @@ end
 
 function interpret_move(move)
 	local x, y, type
-	if move == 'q' or move == 'quit' then type = 'q' end
 	if move:find('#') then
 		type = 'flag'
 	else
@@ -19,8 +18,8 @@ function interpret_move(move)
 	end
 	x = markers:find(move:match('%a'):upper())
 	y = tonumber(move:match('%d'))
-
 	if x == nil or y == nil then type = 'bad' end
+	if move == 'q' or move == 'quit' then type = 'q' end
 	return x, y, type
 end
 
@@ -94,6 +93,9 @@ repeat
 	elseif type == 'sweep' then
 		board = swpr.setup_game(mv_x, mv_y, mode)
 		valid = true
+	elseif type == 'q' then
+		io.write('\nQuitting Lua Minesweeper, goodbye!\n ')
+		os.exit()
 	else
 		io.write('Invalid input! Try again: ')
 	end
@@ -124,6 +126,7 @@ repeat
 		elseif type == 'sweep' then
 			board, win = swpr.sweep_cell(mv_x, mv_y)
 			valid = true
+		elseif type == 'q' then break
 		else
 			io.write('Invalid input! Try again: ')
 		end
