@@ -23,6 +23,10 @@ For the most part that is just requiring the logic file and implementing a UI ar
 
 There is a Makeile which makes the release folders that are ready to run on each platform.
 
+## License
+
+Under the GPLv3 as it has dependencies (e.g. Enceladus) that are GPLv3.
+
 ## Platforms I might add
 
 - Dreamcast via ANTIRUINS
@@ -31,14 +35,8 @@ There is a Makeile which makes the release folders that are ready to run on each
 - REAPER
 - PICO-8
 - (Neo)Vim
-
-### May have to make my own LuaPlayer?
-
-- PlayStation (with PSn00bSDK?)
-- Nintendo 64
-- GameCube
-- MegaDrive (maybe a *very* slimmed down LuaPlayer can be made with Marsdev/SGDK?)
-- SNES via PVSnesLib
+- If I'm willing to look at developing my own LuaPlayer(s), I could maybe support PSX, N64 etc.
+- Note to self: Check out KallistiOS and its possible GC support
 
 ## TODO
 
