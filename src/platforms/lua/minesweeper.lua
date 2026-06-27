@@ -18,7 +18,7 @@ function interpret_move(move)
 	else
 		type = 'sweep'
 	end
-	x = markers:find(move:match('%a'))
+	x = markers:find(move:match('%a'):upper())
 	y = tonumber(move:match('%d'))
 	return x, y, type
 end
@@ -52,6 +52,7 @@ clear_screen()
 io.write('Welcome to Lua Minesweeper! Choose an option: ')
 
 local mode = io.read()
+mode = mode:lower()
 repeat
 	if mode == 'b' or mode == 'beginner' then
 		break
@@ -90,6 +91,7 @@ elseif type == 'sweep' then
 end
 
 if type == 'q' or type == 'quit' then os.exit() end
+local win
 
 clear_screen()
 
@@ -105,10 +107,17 @@ repeat
 	io.write('\nEnter your next move: ')
 	mv_x, mv_y, type = interpret_move(io.read())
 	if type == 'flag' then
-		board = swpr.toggle_flag(mv_x, mv_y)
+		board, win = swpr.toggle_flag(mv_x, mv_y)
 	elseif type == 'sweep' then
-		board = swpr.sweep_cell(mv_x, mv_y)
+		board, win = swpr.sweep_cell(mv_x, mv_y)
 	end
+
 	clear_screen()
-until type == 'q'
+until type == 'q' or win
+
+if win then
+	io.write('You won! :)\n ')
+else
+	io.write('Quitting Lua Minesweeper, goodbye!\n ')
+end
 
