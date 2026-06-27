@@ -34,8 +34,8 @@ It offers a very simple end user API. All functions return the simplified plotta
 
 swpr.get_details(mode) - returns the columns, rows and a blank board (handy for first plots) for a mode.
 swpr.setup_game(x, y, mode) - Sets up a new game based on the mode and first sweep (where a mine must never be)
-swpr.sweep_cell(x, y) - Sweep from the user selected cell
-swpr.toggle_flag(x, y) - Toggle the flag in a position
+swpr.sweep_cell(x, y) - Sweep from selected cell
+swpr.toggle_flag(x, y) - Toggle the flag for a cell
 swpr.get_board() - Get the internal simplified and easily plottable Minesweeper matrix of just nil, numbers or 'F'
 
 --]]
