@@ -101,7 +101,7 @@ function M.setup_game(mv_x, mv_y, mode)
 	end
 	board.mode = mode
 	board.columns = columns
-	board.row = rows
+	board.rows = rows
 
 	return M.sweep_cell(mv_x, mv_y)
 end
