@@ -177,16 +177,13 @@ function M.get_board(hit_mine)
 	local col, row, simple_board = M.get_details(board.mode)
 	for i = 1, row do
 		for k = 1, col do
-			if win and (board[k][i] == 'FM' or board[k][i] == 'M') then
+			simple_board[k][i] = board[k][i]
+			local isMine = (board[k][i] == 'M' or board[k][i] == 'FM')
+			if simple_board[k][i] == 'FM' then simple_board[k][i] = 'F' end
+			if (win or hit_mine) and isMine then
 				simple_board[k][i] = 'M'
-			elseif board[k][i] == 'FM' or board[k][i] == 'F' then
-				simple_board[k][i] = 'F'
-			elseif hit_mine and (board[k][i] == 'M' or simple_board[k][i] == 'F') then
-				simple_board[k][i] = 'M'
-			elseif not hit_mine and board[k][i] == 'M' then
+			elseif not hit_mine and simple_board[k][i] == 'M' then
 				simple_board[k][i] = nil
-			else
-				simple_board[k][i] = board[k][i]
 			end
 		end
 	end
