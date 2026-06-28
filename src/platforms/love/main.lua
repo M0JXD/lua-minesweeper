@@ -20,8 +20,8 @@ end
 
 local function draw_game()
 	local image
-	for i = 0, rows - 1 do
-		for k = 0, columns - 1 do
+	for k = 0, rows - 1 do
+		for i = 0, columns - 1 do
 			if hover_x == i + 1 and hover_y == k + 1 and board[i + 1][k + 1] == nil then
 				image = 12
 			elseif hover_x == i + 1 and hover_y == k + 1 and board[i + 1][k + 1] == 'F' then
