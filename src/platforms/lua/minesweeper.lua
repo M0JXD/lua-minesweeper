@@ -1,4 +1,5 @@
 -- Lua Minesweeper for the Lua platform
+-- TODO: Instead of entering, we could allow user to navigate the grid with the arrow keys?
 
 local swpr = require('logic')
 local colors = require('ansicolors')
