@@ -1,10 +1,21 @@
--- Lua Minesweeper - LÖVE Platform
+--[[ Lua Minesweeper - LÖVE Platform
 
-local swpr = require('logic')
+The game's "native" resolution is 512*640, which makes cell sizes:
+
+Beginner: 64px
+Intermediate: 32px
+Expert: ~16px
+
+--]] local swpr = require('logic')
 local cell_imgs
+local columns, rows = 8, 8
+local size, mode, scale = 64, 'b'
 
 function love.load()
+	success = love.window.setMode(512, 640)
 	cell_imgs = love.graphics.newArrayImage{
+		-- LuaFormatter off
+		"assets/open.png",
 		"assets/1.png",
 		"assets/2.png",
 		"assets/3.png",
@@ -13,17 +24,23 @@ function love.load()
 		"assets/6.png",
 		"assets/7.png",
 		"assets/8.png",
-		"assets/open.png",
 		"assets/hidden.png",
 		"assets/flag.png",
 		"assets/mine.png"
+		-- LuaFormatter on
 	}
 end
 
 function love.draw()
-    for i=1, 8 do
-		for k=1, 8 do
-			love.graphics.drawLayer(cell_imgs, i, (i * 50), (k * 50), 0, 0.15, 0.15)
+	for i = 0, columns - 1 do
+		for k = 0, rows - 1 do
+			love.graphics.drawLayer(cell_imgs, 10, (i * size), 640 - (size * rows) + (k * size), 0,
+				scale, scale)
 		end
 	end
+end
+
+function love.update()
+	size = mode == 'b' and 64 or mode == 'i' and 32 or 16
+	scale = size / 320
 end
