@@ -1,6 +1,4 @@
---[[ Minesweeper UI for Enceladus on PS2
-
-
+--[[ Lua Minesweeper - Enceladus (PS2) Platform
 
 Screen.setMode(NTSC, 640, 448, CT24, INTERLACED, FIELD)
 
