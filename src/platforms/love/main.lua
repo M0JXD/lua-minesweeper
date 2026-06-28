@@ -1,6 +1,6 @@
 --[[ Lua Minesweeper - LÖVE Platform
 
-The game's "native" resolution is 512*640, which makes cell sizes:
+The game's 'native' resolution is 512*640, which makes cell sizes:
 
 Beginner: 64px
 Intermediate: 32px
@@ -74,16 +74,12 @@ end
 
 function game_mousemoved(x, y, dx, dy, istouch)
 	if situation == 'lost' or situation == true or y < 640 - (size * rows) then return end
-
-	-- Convert x/y to grid
 	hover_x = math.floor(x / size) + 1
 	hover_y = math.floor((y - (640 - (size * rows))) / size) + 1
 end
 
 function game_mousepressed(x, y, button, istouch, presses)
 	if situation == 'lost' or situation == true or y < 640 - (size * rows) then return end
-
-	-- Convert x/y to grid
 	local grid_x = math.floor(x / size) + 1
 	local grid_y = math.floor((y - (640 - (size * rows))) / size) + 1
 
@@ -105,24 +101,24 @@ function love.load()
 	love.window.setTitle('Lua Minesweeper - LÖVE Platform')
 	success = love.window.setMode(512, 640)
 
-	start_menu = love.graphics.newImage("assets/start_menu.png")
-	arrow = love.graphics.newImage("assets/arrow.png")
+	start_menu = love.graphics.newImage('assets/start_menu.png')
+	arrow = love.graphics.newImage('assets/arrow.png')
 	cell_imgs = love.graphics.newArrayImage{
 		-- LuaFormatter off
-		"assets/open.png",
-		"assets/1.png",
-		"assets/2.png",
-		"assets/3.png",
-		"assets/4.png",
-		"assets/5.png",
-		"assets/6.png",
-		"assets/7.png",
-		"assets/8.png",
-		"assets/hidden.png",
-		"assets/flag.png",
-		"assets/hidden_hover.png",
-		"assets/flag_hover.png",
-		"assets/mine.png"
+		'assets/open.png',
+		'assets/1.png',
+		'assets/2.png',
+		'assets/3.png',
+		'assets/4.png',
+		'assets/5.png',
+		'assets/6.png',
+		'assets/7.png',
+		'assets/8.png',
+		'assets/hidden.png',
+		'assets/flag.png',
+		'assets/hidden_hover.png',
+		'assets/flag_hover.png',
+		'assets/mine.png'
 		-- LuaFormatter on
 	}
 end
