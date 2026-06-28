@@ -9,13 +9,34 @@ Expert: ~16px
 --]]
 
 local swpr = require('logic')
-local cell_imgs
+local cell_imgs, start_menu, arrow
 local mode, size, scale = 'b', 64
 local columns, rows, board = swpr.get_details(mode)
+
+
+local function draw_menu()
+	love.graphics.draw(start_menu)
+	love.graphics.draw(arrow, 110, 340 + 0)
+end
+
+local function draw_game()
+	for i = 0, columns - 1 do
+		for k = 0, rows - 1 do
+			love.graphics.drawLayer(cell_imgs, 10, (i * size), 640 - (size * rows) + (k * size), 0,
+				scale, scale)
+		end
+	end
+end
+
+local draw = draw_menu
 
 function love.load()
 	love.window.setTitle('Lua Minesweeper - LÖVE Platform')
 	success = love.window.setMode(512, 640)
+
+	start_menu = love.graphics.newImage("assets/start_menu.png")
+	arrow = love.graphics.newImage("assets/arrow.png")
+
 	cell_imgs = love.graphics.newArrayImage{
 		-- LuaFormatter off
 		"assets/open.png",
@@ -34,15 +55,12 @@ function love.load()
 		"assets/mine.png"
 		-- LuaFormatter on
 	}
+
+
 end
 
 function love.draw()
-	for i = 0, columns - 1 do
-		for k = 0, rows - 1 do
-			love.graphics.drawLayer(cell_imgs, 10, (i * size), 640 - (size * rows) + (k * size), 0,
-				scale, scale)
-		end
-	end
+	draw()
 end
 
 function love.update()
