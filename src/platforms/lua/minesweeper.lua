@@ -14,17 +14,18 @@ local function clear_screen()
 end
 
 function interpret_move(move)
-	local x, y, type
+	local x, y, action
 	if move:find('#') then
-		type = 'flag'
+		action = 'flag'
 	else
-		type = 'sweep'
+		action = 'sweep'
 	end
-	x = markers:find(move:match('[&!%a$%%]'):upper(), 1 ,true)
+	local match = move:match('[&!%a$%%]')
+	if match then x = markers:find(match:upper(), 1 ,true) end
 	y = tonumber(move:match('%d+'))
-	if x == nil or y == nil then type = 'bad' end
-	if move == 'q' or move == 'quit' then type = 'q' end
-	return x, y, type
+	if x == nil or y == nil then action = 'bad' end
+	if move == 'q' or move == 'quit' then action = 'q' end
+	return x, y, action
 end
 
 local function plot_cells(x, y, board)
@@ -104,22 +105,23 @@ local columns, rows, board = swpr.get_details(mode)
 plot_cells(columns, rows, board)
 
 io.write('\nEnter your first move: ')
-local valid, win = false, false
+local valid, win, action = false, false
 repeat
-	local mv_x, mv_y, type = interpret_move(io.read())
-	if type == 'sweep' then
+	local mv_x, mv_y, action = interpret_move(io.read())
+	if action == 'sweep' then
 		board = swpr.setup_game(mv_x, mv_y, mode)
 		valid = true
-	elseif type == 'q' then
+	elseif action == 'q' then
 		io.write('\nQuitting Lua Minesweeper, goodbye!\n ')
 		os.exit()
 	else
 		io.write('Invalid input! Try again: ')
 	end
+	if action == 'q' or action == 'quit' then os.exit() end
 until valid
-if type == 'q' or type == 'quit' then os.exit() end
 clear_screen()
 
+local action
 repeat
 	clear_screen()
 	io.write('  Lua Minesweeper\n\n')
@@ -132,19 +134,20 @@ repeat
 	io.write('\nEnter your next move: ')
 	local valid = false
 	repeat
-		mv_x, mv_y, type = interpret_move(io.read())
-		if type == 'flag' then
+		local mv_x, mv_y
+		mv_x, mv_y, action = interpret_move(io.read())
+		if action == 'flag' then
 			board, win = swpr.toggle_flag(mv_x, mv_y)
 			valid = true
-		elseif type == 'sweep' then
+		elseif action == 'sweep' then
 			board, win = swpr.sweep_cell(mv_x, mv_y)
 			valid = true
-		elseif type == 'q' then break
+		elseif action == 'q' then break
 		else
 			io.write('Invalid input! Try again: ')
 		end
 	until valid
-until type == 'q' or win
+until action == 'q' or win
 
 if win then
 	clear_screen()
