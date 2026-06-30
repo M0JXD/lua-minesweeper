@@ -4,15 +4,16 @@ Screen.setMode(NTSC, 640, 448, CT24, INTERLACED, FIELD)
 
 --]]
 
-local swpr = require('logic')
-
-Font.fmLoad()
+local swpr = require('minesweeper/logic')
 
 local function menu()
 
-	return choice
+
 end
 
+local function game()
+
+end
 
 -- START --
 

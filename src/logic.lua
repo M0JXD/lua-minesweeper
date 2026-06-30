@@ -26,7 +26,7 @@ nil for a hidden cell
 0 for a revealed cell with no adjacent mines
 A number a revealed cell with 'n' adjacent mines
 'F' for a user flagged cell
-'M' mines upon game failure (user must check if board contains mines)
+'M' mines upon game completion (user must check if board contains mines)
 
 -- API --
 
