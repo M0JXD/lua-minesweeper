@@ -1,6 +1,7 @@
 # Lua Minesweeper
 
 This is my attempt at using Lua to make the classic game Minesweeper for as many platforms as I can.
+It is a work in progress!
 
 ## Platforms
 
@@ -26,6 +27,7 @@ There is a Makeile which makes the release folders that are ready to run on each
 ## License
 
 Under the GPLv3 as it has dependencies (e.g. Enceladus) that are GPLv3.
+NB: The file "ansicolors.lua" for the Lua platform has been modified to support Windows Terminal. The change I made can be used under the original MIT license.
 
 ## Platforms I might add
 
