@@ -48,6 +48,7 @@ local function game()
 	local centering = (640 - (columns * size)) / 2
 	for k = 0, rows - 1 do
 		for i = 0, columns - 1 do
+			local transparency = 128
 			if hover_x == i + 1 and hover_y == k + 1 and board[i + 1][k + 1] == nil then
 				image = 12
 			elseif hover_x == i + 1 and hover_y == k + 1 and board[i + 1][k + 1] == 'F' then
@@ -61,13 +62,14 @@ local function game()
 				image = 11
 			else
 				image = board[i + 1][k + 1] + 1
+				if hover_x == i + 1 and hover_y == k + 1 then transparency = 80 end
 			end
 			if mode == 'b' then
 				Graphics.drawImage(cell_imgs[image], centering + (i * size),
-					(448 - (size * rows)) + (k * size))
+					(448 - (size * rows)) + (k * size), Color.new(128, 128, 128, transparency))
 			else
 				Graphics.drawScaleImage(cell_imgs[image], centering + (i * size),
-					(448 - (size * rows)) + (k * size), size, size)
+					(448 - (size * rows)) + (k * size), size, size, Color.new(128, 128, 128, transparency))
 			end
 		end
 	end
