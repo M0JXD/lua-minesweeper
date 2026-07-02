@@ -26,7 +26,7 @@ There is a Makefile which makes the release folders that are ready to run on eac
 
 ## License
 
-Under the GPLv3 as it has dependencies (e.g. Enceladus) that are GPLv3.
+Under the GPLv3 as it has dependencies (e.g. Enceladus) that are GPLv3.  
 NB: The file "ansicolors.lua" for the Lua platform has been modified to support Windows Terminal. The change I made can be used under the original MIT license.
 
 ## Platforms I might add
