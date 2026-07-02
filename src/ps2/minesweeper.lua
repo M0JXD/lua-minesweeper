@@ -26,7 +26,7 @@ local cell_imgs = {
 	Graphics.loadImage('minesweeper/flag_hover.png'), Graphics.loadImage('minesweeper/mine.png')
 }
 
-local function game()
+function game()
 	if Pads.check(pad, PAD_CROSS) and not Pads.check(oldpad, PAD_CROSS) then
 		if situation == 'start' then
 			board, situation = swpr.setup_game(hover_x, hover_y, mode)
@@ -43,6 +43,8 @@ local function game()
 		hover_x = hover_x > 1 and hover_x - 1 or 1
 	elseif Pads.check(pad, PAD_RIGHT) and not Pads.check(oldpad, PAD_RIGHT) then
 		hover_x = hover_x < rows and hover_x + 1 or hover_x
+	elseif Pads.check(pad, PAD_START) and not Pads.check(oldpad, PAD_START) then
+		main_loop = menu
 	end
 
 	local centering = (640 - (columns * size)) / 2
@@ -62,7 +64,7 @@ local function game()
 				image = 11
 			else
 				image = board[i + 1][k + 1] + 1
-				if hover_x == i + 1 and hover_y == k + 1 then transparency = 80 end
+				if hover_x == i + 1 and hover_y == k + 1 then transparency = 90 end
 			end
 			if mode == 'b' then
 				Graphics.drawImage(cell_imgs[image], centering + (i * size),
@@ -75,14 +77,12 @@ local function game()
 	end
 end
 
-local function menu()
+function menu()
 	Graphics.drawImage(start_menu, 0, 0)
 	Graphics.drawImage(arrow, 165, 148 + (mode == 'b' and 0 or mode == 'i' and 105 or 205))
 	if Pads.check(pad, PAD_CROSS) and not Pads.check(oldpad, PAD_CROSS) then
 		situation = 'start'
 		size = mode == 'b' and 48 or mode == 'i' and 24 or 20
-		Graphics.freeImage(start_menu)
-		Graphics.freeImage(arrow)
 		columns, rows, board = swpr.get_details(mode)
 		main_loop = game
 	elseif Pads.check(pad, PAD_DOWN) and not Pads.check(oldpad, PAD_DOWN) then
