@@ -1,6 +1,8 @@
 --[[ Lua Minesweeper - LÖVE Platform
 
 The game's 'native' resolution is 512*640, which makes cell sizes:
+-- TODO: Convert landscape resolution to 640x448 so all platforms are the same,
+-- then also adapt to mobile with 640x960
 
 Beginner: 64px
 Intermediate: 32px
