@@ -19,6 +19,7 @@ build/ps2:
 build/ps2/minesweeper/minesweeper.lua: src/ps2/minesweeper.lua
 	mkdir -p build/ps2/minesweeper
 	cp src/logic.lua src/ps2/* build/ps2/minesweeper
+	cp assets/*.png build/ps2/minesweeper
 
 love: src/love/main.lua
 	mkdir -p build/love/src/assets
