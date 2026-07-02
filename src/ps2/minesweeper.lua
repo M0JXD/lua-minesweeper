@@ -34,9 +34,7 @@ local function game()
 			board, situation = swpr.sweep_cell(hover_x, hover_y)
 		end
 	elseif Pads.check(pad, PAD_SQUARE) and not Pads.check(oldpad, PAD_SQUARE) then
-		if situation ~= 'start' then
-			board, situation = swpr.toggle_flag(hover_x, hover_y)
-		end
+		if situation ~= 'start' then board, situation = swpr.toggle_flag(hover_x, hover_y) end
 	elseif Pads.check(pad, PAD_UP) and not Pads.check(oldpad, PAD_UP) then
 		hover_y = hover_y > 1 and hover_y - 1 or 1
 	elseif Pads.check(pad, PAD_DOWN) and not Pads.check(oldpad, PAD_DOWN) then
