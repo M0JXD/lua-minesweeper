@@ -11,13 +11,11 @@ Expert: 20px
 
 local swpr = require('minesweeper/logic')
 local mode, columns, rows, board = 'b', 8, 8, {}
-local hover_x, hover_y, size = 1, 1, 32
+local hover_x, hover_y, size, scale = 1, 1, 48, 1
 local pad, oldpad, situation
-
--- Load images
 local start_menu = Graphics.loadImage('assets/start_menu.png')
 local arrow = Graphics.loadImage('assets/arrow.png')
-local cell_imgs
+local cell_imgs, main_loop
 
 function loadGameImages()
 	cell_imgs = {
@@ -33,22 +31,26 @@ function loadGameImages()
 end
 
 local function menu()
-	Graphics.drawImage(start_menu, 0, 0)
 	if Pads.check(pad, PAD_X) and not Pads.check(oldpad, PAD_X) then
 		columns, rows, board = swpr.get_details(mode)
 		situation = 'start'
+		size = mode == 'b' and 48 or mode == 'i' and 24 or 20
+		scale = mode == 'b' and 1 or mode == 'i' and 0.5 or 0.4166
 		Graphics.freeImage(start_menu)
 		Graphics.freeImage(arrow)
 		loadGameImages()
-		loop_func = game
+		main_loop = game
 	elseif Pads.check(pad, PAD_DOWN) and not Pads.check(oldpad, PAD_DOWN) then
 		mode = mode == 'b' and 'i' or 'e'
 	elseif Pads.check(pad, PAD_UP) and not Pads.check(oldpad, PAD_UP) then
 		mode = mode == 'e' and 'i' or 'b'
 	end
+	Graphics.drawImage(start_menu, 0, 0)
+	Graphics.drawImage(arrow, 165, 148 + (mode == 'b') and 0 or mode == 'i' and 105 or 205)
 end
 
 local function game()
+	local centering = (640 - (columns * size)) / 2
 	if not situation == true then
 		if Pads.check(pad, PAD_X) and not Pads.check(oldpad, PAD_X) then
 			if situation == 'start' then
@@ -86,14 +88,15 @@ local function game()
 			elseif board[i + 1][k + 1] == 'F' then
 				image = 11
 			else
-				image = board[i + 1][k + 1] - 1
+				image = board[i + 1][k + 1] + 1
 			end
-			Graphics.drawImage(cell_imgs[image], (i * size), 640 - (size * rows) + (k * size))
+			Graphics.drawScaleImage(cell_imgs[image], centering + (i * size),
+				640 - (size * rows) + (k * size), scale, scale)
 		end
 	end
 end
 
-local loop_func = menu
+main_loop = menu
 
 -- START --
 
@@ -101,7 +104,7 @@ while true do
 	Screen.clear()
 	oldpad = pad
 	pad = Pads.get()
-	loop_func()
+	main_loop()
 	Screen.waitVblankStart()
 	Screen.flip()
 end
