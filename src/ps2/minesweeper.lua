@@ -38,11 +38,11 @@ function game()
 	elseif Pads.check(pad, PAD_UP) and not Pads.check(oldpad, PAD_UP) then
 		hover_y = hover_y > 1 and hover_y - 1 or 1
 	elseif Pads.check(pad, PAD_DOWN) and not Pads.check(oldpad, PAD_DOWN) then
-		hover_y = hover_y < columns and hover_y + 1 or hover_y
+		hover_y = hover_y < rows and hover_y + 1 or hover_y
 	elseif Pads.check(pad, PAD_LEFT) and not Pads.check(oldpad, PAD_LEFT) then
 		hover_x = hover_x > 1 and hover_x - 1 or 1
 	elseif Pads.check(pad, PAD_RIGHT) and not Pads.check(oldpad, PAD_RIGHT) then
-		hover_x = hover_x < rows and hover_x + 1 or hover_x
+		hover_x = hover_x < columns and hover_x + 1 or hover_x
 	elseif Pads.check(pad, PAD_START) and not Pads.check(oldpad, PAD_START) then
 		main_loop = menu
 	end
@@ -84,6 +84,7 @@ function menu()
 		situation = 'start'
 		size = mode == 'b' and 48 or mode == 'i' and 24 or 20
 		columns, rows, board = swpr.get_details(mode)
+		hover_x, hover_y = 1, 1
 		main_loop = game
 	elseif Pads.check(pad, PAD_DOWN) and not Pads.check(oldpad, PAD_DOWN) then
 		mode = mode == 'b' and 'i' or 'e'
