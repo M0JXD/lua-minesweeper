@@ -45,6 +45,6 @@ This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under
 
 ## Credits
 
-- PUC-Rio for [Lua](www.lua.org).
-- The [LÖVE](www.love2d.org) developers.
+- PUC-Rio for [Lua](https://www.lua.org).
+- The [LÖVE](https://www.love2d.org) developers.
 - @DanielSant0s for [Enceladus](https://github.com/DanielSant0s/Enceladus).
