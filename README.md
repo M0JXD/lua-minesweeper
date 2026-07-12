@@ -14,7 +14,8 @@ This is my attempt at using Lua to make the classic game Minesweeper for as many
 
 The core logic of Lua Minesweeper is platform independent and implemented in *logic.lua*.
 
-Each platform has a folder within the source tree, which has an implementation README and platform specific Lua code. For the most part that is just requiring the logic file and implementing a UI around it.
+Each platform has a folder within the source tree, which has an implementation README and platform specific Lua code.
+For the most part that is just requiring the logic file and implementing a UI around it.
 
 ## Building
 
@@ -25,7 +26,7 @@ You can build just for a specific platform by specifying the target, e.g. `make 
 
 This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under the same license, apart from the following exemption(s):
 
-- The file "ansicolors.lua" for the Lua platform has been modified to support Windows Terminal. The change I made can be used under the original MIT license.
+- The file "ansicolors.lua" for the Lua platform is Rob Hoelz's and Enrique García Cota's "ansicolors.lua", modified to support Windows Terminal. This modified version can be used under the original MIT license.
 
 ## Platforms awaiting implementation and/or under consideration:
 
@@ -51,3 +52,4 @@ This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under
 - PUC-Rio for [Lua](https://www.lua.org).
 - The [LÖVE](https://www.love2d.org) developers.
 - @DanielSant0s for [Enceladus](https://github.com/DanielSant0s/Enceladus).
+- Rob Hoelz and Enrique García Cota for "ansicolors.lua"
