@@ -1,0 +1,2 @@
+ignore = {'.git', 'build', 'resources', 'assets'}
+max_scan = 10000
