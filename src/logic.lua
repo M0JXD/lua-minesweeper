@@ -1,55 +1,38 @@
---[[ Lua Minesweeper Game Logic
-
--- Game Types --
-
-Beginner: 8x8 with 10 mines
-Intermediate: 16x16 with 40 mines
-Expert: 30x16 with 99 mines
-
--- Board Data --
-
-The main board is represented by a 2D Matrix.
-Each 'cell' contains a value reprenting what it is:
-
-Internally, it uses:
-
-nil for hidden cell
-0 for a revealed cell with no adjacent mines
-A number a revealed cell with 'n' adjacent mines
-'F' for a user flagged cell with no mine
-'FM' for a user flagged cell with a mine
-'M' for a  mine
-
-Externally, this is simplified to:
-
-nil for a hidden cell
-0 for a revealed cell with no adjacent mines
-A number a revealed cell with 'n' adjacent mines
-'F' for a user flagged cell
-'M' mines upon game completion (user must check if board contains mines)
-
--- API --
-
-It offers a very simple end user API. All functions return the simplified plottable board.
-
-swpr.get_details(mode) - returns the columns, rows and a blank board (handy for first plots) for a mode.
-swpr.setup_game(x, y, mode) - Sets up a new game based on the mode and first sweep (where a mine must never be)
-swpr.sweep_cell(x, y) - Sweep from selected cell
-swpr.toggle_flag(x, y) - Toggle the flag for a cell
-swpr.get_board() - Get the internal simplified and easily plottable Minesweeper matrix of just nil, numbers or 'F'
-
---]]
-
+--- Minesweeper Core Logic in Lua
+-- Minesweeper logic offers support for three game modes:
+--
+-- - Beginner: 8x8 with 10 mines
+-- - Intermediate: 16x16 with 40 mines
+-- - Expert: 30x16 with 99 mines
+--
+-- The main board is represented by a 2D Matrix.
+-- Each 'cell' contains a value reprenting what it is:
+--
+-- Internally, these values are:
+--
+-- nil for hidden cell
+-- 0 for a revealed cell with no adjacent mines
+-- A number a revealed cell with 'n' adjacent mines
+-- 'F' for a flagged cell with no mine
+-- 'FM' for a flagged cell with a mine
+-- 'M' for a  mine
+--
+-- Externally, this is simplified to:
+--
+-- nil for a hidden cell
+-- 0 for a revealed cell with no adjacent mines
+-- A number a revealed cell with 'n' adjacent mines
+-- 'F' for a flagged cell
+-- 'M' mines upon game completion (user must check if board contains mines)
+--
+-- All functions return the simplified plottable board.
+-- @module minesweeper_logic
 local M = {}
-
--- Internal Data --
 
 local board = {}
 board.mode = 'beginner'
 board.columns = 8
 board.rows = 8
-
--- Functions --
 
 local function detect_win()
 	for i = 1, board.rows do
@@ -68,6 +51,7 @@ local function check_mine(x, y)
 	return false
 end
 
+--- Returns the columns, rows and a blank board (handy for first plots) for a mode.
 function M.get_details(mode)
 	local rows = (mode == 'beginner' or mode == 'b') and 8 or 16
 	local columns = (mode == 'expert' or mode == 'e') and 30 or rows
@@ -76,7 +60,7 @@ function M.get_details(mode)
 	return columns, rows, blank_board
 end
 
--- Setup a board based on the first click spot and the game mode
+--- Sets up a new game based on the mode and first sweep (where a mine must never be)
 function M.setup_game(mv_x, mv_y, mode)
 	local columns, rows = M.get_details(mode)
 	local mines = (mode == 'beginner' or mode == 'b') and 10 or
@@ -106,7 +90,7 @@ function M.setup_game(mv_x, mv_y, mode)
 	return M.sweep_cell(mv_x, mv_y)
 end
 
--- Toggles flag on a cell
+--- Toggle the flag for a cell
 function M.toggle_flag(x, y)
 	if type(board[x][y]) == 'number' then return M.get_board(false) end
 	if board[x][y] == 'M' then
@@ -121,7 +105,7 @@ function M.toggle_flag(x, y)
 	return M.get_board(false)
 end
 
--- Choose a cell to "sweep"
+--- Sweep from selected cell
 function M.sweep_cell(x, y)
 	if board[x][y] == 'M' then
 		return M.get_board(true)
@@ -171,7 +155,7 @@ function M.sweep_cell(x, y)
 	return M.get_board(false)
 end
 
--- Returns the board for plotting by losing mine data
+--- Get simplified and easily plottable Minesweeper matrix of just nil, numbers or 'F'
 function M.get_board(hit_mine)
 	local win = detect_win()
 	local col, row, simple_board = M.get_details(board.mode)
