@@ -43,10 +43,6 @@ This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under
 - If I'm willing to look at developing my own LuaPlayer(s), I could maybe support PSX, N64 etc.
 - Note to self: Check out KallistiOS and its possible GC support
 
-## TODO
-
-- Use a minifier when "building".
-
 ## Credits
 
 - PUC-Rio for [Lua](https://www.lua.org).
