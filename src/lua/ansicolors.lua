@@ -1,4 +1,4 @@
--- ansicolors.lua v1.0.3 (2026-08)
+-- ansicolors.lua v1.0.4 (2026-08)
 
 -- Copyright (c) 2009 Rob Hoelz <rob@hoelzro.net>
 -- Copyright (c) 2011 Enrique García Cota <enrique.garcia.cota@gmail.com>
@@ -22,82 +22,64 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 -- THE SOFTWARE.
 
-
--- support detection
-local function isWindows()
-  return type(package) == 'table' and type(package.config) == 'string' and package.config:sub(1,1) == '\\'
+--- Detect if color mode would be supported.
+local function colorSupport()
+	local isWindows = type(package) == 'table' and type(package.config) == 'string' and
+		package.config:sub(1, 1) == '\\'
+	return isWindows and (os.getenv("ANSICON") or os.getenv('WT_SESSION')) or true
 end
 
-local supported = not isWindows()
-if isWindows() then
-	supported = os.getenv("ANSICON") or os.getenv('WT_SESSION')
-end
-
+--- Color Mode Keys table.
 local keys = {
-  -- reset
-  reset =      0,
-
-  -- misc
-  bright     = 1,
-  dim        = 2,
-  underline  = 4,
-  blink      = 5,
-  reverse    = 7,
-  hidden     = 8,
-
-  -- foreground colors
-  black     = 30,
-  red       = 31,
-  green     = 32,
-  yellow    = 33,
-  blue      = 34,
-  magenta   = 35,
-  cyan      = 36,
-  white     = 37,
-
-  -- background colors
-  blackbg   = 40,
-  redbg     = 41,
-  greenbg   = 42,
-  yellowbg  = 43,
-  bluebg    = 44,
-  magentabg = 45,
-  cyanbg    = 46,
-  whitebg   = 47
+	-- reset
+	reset = 0,
+	-- misc
+	bright = 1, dim = 2, underline = 4, blink = 5, reverse = 7, hidden = 8,
+	-- foreground colors
+	black = 30, red = 31, green = 32, yellow = 33, blue = 34, magenta = 35, cyan = 36, white = 37,
+	-- background colors
+	blackbg = 40, redbg = 41, greenbg = 42, yellowbg = 43, bluebg = 44, magentabg = 45, cyanbg = 46,
+	whitebg = 47
 }
 
 local escapeString = string.char(27) .. '[%dm'
+
+--- Inserts the escape character to the terminal number.
+-- @param terminal number to insert.
 local function escapeNumber(number)
-  return escapeString:format(number)
+	return escapeString:format(number)
 end
 
+local supported = colorSupport()
+
+--- Converts key to terminal escape code.
+-- @param str key to substitute with escape code.
 local function escapeKeys(str)
+	if not supported then return "" end
 
-  if not supported then return "" end
+	local buffer = {}
+	local number
+	for word in str:gmatch("%w+") do
+		number = keys[word]
+		assert(number, "Unknown key: " .. word)
+		table.insert(buffer, escapeNumber(number))
+	end
 
-  local buffer = {}
-  local number
-  for word in str:gmatch("%w+") do
-    number = keys[word]
-    assert(number, "Unknown key: " .. word)
-    table.insert(buffer, escapeNumber(number) )
-  end
-
-  return table.concat(buffer)
+	return table.concat(buffer)
 end
 
+--- Replaces %{key} codes.
+-- @param str String with %{key} entries to apply colors to.
 local function replaceCodes(str)
-  str = string.gsub(str,"(%%{(.-)})", function(_, str) return escapeKeys(str) end )
-  return str
+	str = string.gsub(str, "(%%{(.-)})", function(_, str) return escapeKeys(str) end)
+	return str
 end
 
--- public
-
-local function ansicolors( str )
-  str = tostring(str or '')
-
-  return replaceCodes('%{reset}' .. str .. '%{reset}')
+--- Apply terminal colors with automatic reset.
+-- @param str String with %{key} to color in.
+local function ansicolors(str)
+	str = tostring(str or '')
+	return replaceCodes('%{reset}' .. str .. '%{reset}')
 end
 
-
-return setmetatable({noReset = replaceCodes}, {__call = function (_, str) return ansicolors (str) end})
+return setmetatable({noReset = replaceCodes}, {__call = function(_, str) return ansicolors(str) end})
