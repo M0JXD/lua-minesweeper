@@ -1,4 +1,5 @@
 --- Minesweeper Core Logic in Lua
+--
 -- Minesweeper logic offers support for three game modes:
 --
 -- - Beginner: 8x8 with 10 mines
@@ -10,20 +11,20 @@
 --
 -- Internally, these values are:
 --
--- nil for hidden cell
--- 0 for a revealed cell with no adjacent mines
--- A number a revealed cell with 'n' adjacent mines
--- 'F' for a flagged cell with no mine
--- 'FM' for a flagged cell with a mine
--- 'M' for a  mine
+-- - `nil` for hidden cell
+-- - `0` for a revealed cell with no adjacent mines
+-- - A number a revealed cell with 'n' adjacent mines
+-- - `'F'` for a flagged cell with no mine
+-- - `'FM'` for a flagged cell with a mine
+-- - `'M'` for a  mine
 --
 -- Externally, this is simplified to:
 --
--- nil for a hidden cell
--- 0 for a revealed cell with no adjacent mines
--- A number a revealed cell with 'n' adjacent mines
--- 'F' for a flagged cell
--- 'M' mines upon game completion (user must check if board contains mines)
+-- - `nil` for a hidden cell
+-- - `0` for a revealed cell with no adjacent mines
+-- - A number a revealed cell with 'n' adjacent mines
+-- - `'F'` for a flagged cell
+-- - `'M'` mines upon game completion (user must check if board contains mines)
 --
 -- All functions return the simplified plottable board.
 -- @module minesweeper_logic
