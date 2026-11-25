@@ -32,6 +32,7 @@ This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under
 
 - Adjust LÖVE version to play nice on Mobile 
 - Love.js for the Web
+- MegaDrive via mdlua
 - Wii via LuafWii or Wiilove
 - Textadept
 - Dreamcast via ANTIRUINS
