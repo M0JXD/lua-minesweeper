@@ -1,13 +1,19 @@
---[[ Lua Minesweeper - LÖVE Platform
-
-The game's 'native' resolution is 640x448, which makes cell sizes:
--- Adapt to mobile with 640x960
-
-Beginner: 48px
-Intermediate: 24px
-Expert: 20px
-
---]]
+--- Lua Minesweeper - LÖVE Platform
+--
+-- You will need LÖVE installed, download the runner for your
+-- platform from the website: <https://love2d.org/>
+--
+-- Please note: The UI does not scale yet so it might not work so well on
+-- Mobile devices. Hopefully I'll use love.js to run it on the web too.
+--
+-- The game's 'native' resolution is 640x448, which makes cell sizes:
+--
+-- - Beginner: 48px
+-- - Intermediate: 24px
+-- - Expert: 20px
+--
+-- TODO: Adapt to mobile with 640x960 resolution.
+-- @script love
 
 local swpr = require('logic')
 local cell_imgs, start_menu, arrow
