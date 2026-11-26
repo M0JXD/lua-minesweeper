@@ -1,3 +1,4 @@
+-- Copyright 2025-2026 Jamie Drinkell. MIT LICENSE.
 --- Lua Minesweeper - LÖVE Platform
 --
 -- You will need LÖVE installed, download the runner for your
@@ -12,7 +13,13 @@
 -- - Intermediate: 24px
 -- - Expert: 20px
 --
--- TODO: Adapt to mobile with 640x960 resolution.
+-- ## Credits
+--
+-- - The [LÖVE](https://www.love2d.org) developers.
+--
+-- ## TODO
+-- - Adapt to mobile with 640x960 resolution.
+
 -- @script love
 
 local swpr = require('logic')
@@ -51,6 +58,7 @@ local function draw_game()
 	end
 end
 
+--- Implement mousemoved for Love2D
 function menu_mousemoved(x, y, dx, dy, istouch)
 	if y < 230 then
 		mode = 0
