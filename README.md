@@ -1,6 +1,8 @@
 # Lua Minesweeper
 
-This is my attempt at using Lua to make the classic game Minesweeper for as many platforms as I can. For now it only implements the basic gameplay for with traditional difficulty levels without any timers/flag counters. It is a work in progress!
+This is my attempt at using Lua to make the classic game Minesweeper for as many platforms as I can.
+For now it only implements the basic gameplay for with traditional difficulty levels without any timers/flag counters.
+It is a work in progress!
 
 ![](assets/screenshots/showcase.png)
 
@@ -46,7 +48,4 @@ This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under
 
 ## Credits
 
-- PUC-Rio for [Lua](https://www.lua.org).
-- The [LÖVE](https://www.love2d.org) developers.
-- @DanielSant0s for [Enceladus](https://github.com/DanielSant0s/Enceladus).
-- Rob Hoelz and Enrique García Cota for "ansicolors.lua"
+- Individual libraries/dependencies are thanked in the documentation for each platform :)
