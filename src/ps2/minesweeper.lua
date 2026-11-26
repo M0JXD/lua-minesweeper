@@ -1,13 +1,21 @@
---[[ Lua Minesweeper - Enceladus (PS2) Platform
+-- Copyright 2025-2026 Jamie Drinkell. MIT LICENSE.
+--- Enceladus (PS2) Platform
+--
+-- Despite the fact I think it's cool as anything that I'm able to do this for the trusty PS2, there's not much to say.
+-- Go play it! Just run the *enceladus_pkd.elf* from LaunchELF (or whatever ELF launcher you use) :)
+--
+-- # Pixel Size Notes
+--
+-- - Screen Width x Height = 640x448
+-- - Beginner: 48px
+-- - Intermediate: 24px
+-- - Expert: 20px
+--
+-- ## Credits
+--
+-- - @DanielSant0s for [Enceladus](https://github.com/DanielSant0s/Enceladus).
 
-WidthxHeight = 640x448
-
-Chosen sizes:
-Beginner: 48px
-Intermediate: 24px
-Expert: 20px
-
---]]
+-- @script enceladus_ps2
 
 local swpr = require('minesweeper/logic')
 local mode, situation = 'b', 'start'
@@ -26,6 +34,7 @@ local cell_imgs = {
 	Graphics.loadImage('minesweeper/flag_hover.png'), Graphics.loadImage('minesweeper/mine.png')
 }
 
+--- Run the game.
 function game()
 	if Pads.check(pad, PAD_CROSS) and not Pads.check(oldpad, PAD_CROSS) then
 		if situation == 'start' then
