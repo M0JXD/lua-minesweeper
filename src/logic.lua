@@ -1,3 +1,4 @@
+-- Copyright 2025-2026 Jamie Drinkell. MIT LICENSE.
 --- Minesweeper Core Logic in Lua
 --
 -- Minesweeper logic offers support for three game modes:
