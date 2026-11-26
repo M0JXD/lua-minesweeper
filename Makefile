@@ -33,13 +33,15 @@ megadrive:
 	cd build/megadrive && npm install mdlua
 	cd build/megadrive && npx mdlua build main.lua -o minesweeper.bin
 
+.PHONY: docs
+
 docs:
 	mkdir -p docs
 	wget -q https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
-	ldoc --filter markdowndoc.ldoc src/logic.lua -- --title="Lua Minesweeper Logic Implementation" --single > docs/LOGIC.md
-	ldoc --filter markdowndoc.ldoc src/love/main.lua -- --title="Lua Minesweeper LOVE2D Platform" --single > docs/LOVE2D.md
-	ldoc --filter markdowndoc.ldoc src/lua/minesweeper.lua -- --title="Lua Minesweeper Lua Platform" --single > docs/LUA_CONSOLE.md
-	ldoc --filter markdowndoc.ldoc src/ps2/minesweeper.lua -- --title="Lua Minesweeper PS2 Platform" --single > docs/PLAYSTATION_2.md
+	ldoc --boilerplate --filter markdowndoc.ldoc src/logic.lua -- --title="Lua Minesweeper Logic Implementation" --single > docs/LOGIC.md
+	#ldoc --boilerplate --filter markdowndoc.ldoc src/love/main.lua -- --title="Lua Minesweeper LOVE2D Platform" --single > docs/LOVE2D.md
+	#ldoc --boilerplate --filter markdowndoc.ldoc src/lua/minesweeper.lua -- --title="Lua Minesweeper Lua Platform" --single > docs/LUA_CONSOLE.md
+	#ldoc --boilerplate --filter markdowndoc.ldoc src/ps2/minesweeper.lua -- --title="Lua Minesweeper PS2 Platform" --single > docs/PLAYSTATION_2.md
 	rm markdowndoc.lua
 
 clean:
