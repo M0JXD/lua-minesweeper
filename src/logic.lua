@@ -31,11 +31,15 @@
 -- @module minesweeper_logic
 local M = {}
 
-local board = {}
-board.mode = 'beginner'
-board.columns = 8
-board.rows = 8
+--- Internal board representation.
+local board = {
+	mode = 'beginner',
+	columns = 8,
+	rows = 8
+}
 
+--- Checks the board to see if a win condition has occured.
+-- @return True if the player has won.
 local function detect_win()
 	for i = 1, board.rows do
 		for k = 1, board.columns do
@@ -48,12 +52,18 @@ local function detect_win()
 	return true
 end
 
+--- Checks if a position is a mine.
+-- @param x Horizontal coordinate.
+-- @param y Vertical coordinate.
+-- @return true/false for if the position is a mine.
 local function check_mine(x, y)
 	if board[x][y] == 'M' or board[x][y] == 'FM' then return true end
 	return false
 end
 
 --- Returns the columns, rows and a blank board (handy for first plots) for a mode.
+-- @param mode The mode to check for (beginner, intermediate or expert).
+-- @return Details with no. columns, rows and a blank "board" to use for starting.
 function M.get_details(mode)
 	local rows = (mode == 'beginner' or mode == 'b') and 8 or 16
 	local columns = (mode == 'expert' or mode == 'e') and 30 or rows
@@ -62,55 +72,34 @@ function M.get_details(mode)
 	return columns, rows, blank_board
 end
 
---- Sets up a new game based on the mode and first sweep (where a mine must never be)
-function M.setup_game(mv_x, mv_y, mode)
-	local columns, rows = M.get_details(mode)
-	local mines = (mode == 'beginner' or mode == 'b') and 10 or
-		(mode == 'intermediate' or mode == 'i') and 40 or 99
-
-	for i = 1, columns do board[i] = {} end
-
-	local amount = 0
-	math.randomseed(os.time())
-	while true do
-		local x = math.random(1, columns)
-		local y = math.random(1, rows)
-
-		-- TODO: Would be nice to avoid placing any near the first click
-		-- So a bit of a sweep can happen on the first go
-		-- which is more informative for the player
-		if board[x][y] == nil and not (x == mv_x and y == mv_y) then
-			board[x][y] = 'M'
-			amount = amount + 1
+--- Get simplified and easily plottable Minesweeper matrix of just nil, numbers or 'F'.
+-- @param hit_mine If the last move hit a mine, so they can be shown.
+-- @return Simplified board, true/false if the user won.
+local function get_board(hit_mine)
+	local win = detect_win()
+	local col, row, simple_board = M.get_details(board.mode)
+	for i = 1, row do
+		for k = 1, col do
+			simple_board[k][i] = board[k][i]
+			local isMine = (board[k][i] == 'M' or board[k][i] == 'FM')
+			if simple_board[k][i] == 'FM' then simple_board[k][i] = 'F' end
+			if (win or hit_mine) and isMine then
+				simple_board[k][i] = 'M'
+			elseif not hit_mine and simple_board[k][i] == 'M' then
+				simple_board[k][i] = nil
+			end
 		end
-		if amount == mines then break end
 	end
-	board.mode = mode
-	board.columns = columns
-	board.rows = rows
-
-	return M.sweep_cell(mv_x, mv_y)
+	return simple_board, win
 end
 
---- Toggle the flag for a cell
-function M.toggle_flag(x, y)
-	if type(board[x][y]) == 'number' then return M.get_board(false) end
-	if board[x][y] == 'M' then
-		board[x][y] = 'FM'
-	elseif board[x][y] == 'F' then
-		board[x][y] = nil
-	elseif board[x][y] == 'FM' then
-		board[x][y] = 'M'
-	else -- must be a nil cell
-		board[x][y] = 'F'
-	end
-	return M.get_board(false)
-end
-
---- Sweep from selected cell
+--- Sweep from selected cell.
+-- @param x Horizontal coordinate.
+-- @param y Vertical coordinate.
+-- @return Plottable board, if the user won/lost.
 function M.sweep_cell(x, y)
 	if board[x][y] == 'M' then
-		return M.get_board(true)
+		return get_board(true)
 	elseif board[x][y] == nil then
 		local count = 0
 		-- LuaFormatter off
@@ -154,26 +143,59 @@ function M.sweep_cell(x, y)
 		end
 		-- LuaFormatter on
 	end
-	return M.get_board(false)
+	return get_board(false)
 end
 
---- Get simplified and easily plottable Minesweeper matrix of just nil, numbers or 'F'
-function M.get_board(hit_mine)
-	local win = detect_win()
-	local col, row, simple_board = M.get_details(board.mode)
-	for i = 1, row do
-		for k = 1, col do
-			simple_board[k][i] = board[k][i]
-			local isMine = (board[k][i] == 'M' or board[k][i] == 'FM')
-			if simple_board[k][i] == 'FM' then simple_board[k][i] = 'F' end
-			if (win or hit_mine) and isMine then
-				simple_board[k][i] = 'M'
-			elseif not hit_mine and simple_board[k][i] == 'M' then
-				simple_board[k][i] = nil
-			end
+--- Sets up a new game based on the mode and first sweep (where a mine must never be).
+-- @param mv_x Horizontal coordinate of first move.
+-- @param mv_y Vertical coordinate of first move.
+-- @param mode Mode the player chose.
+-- @return Plottable board.
+function M.setup_game(mv_x, mv_y, mode)
+	local columns, rows = M.get_details(mode)
+	local mines = (mode == 'beginner' or mode == 'b') and 10 or
+		(mode == 'intermediate' or mode == 'i') and 40 or 99
+
+	for i = 1, columns do board[i] = {} end
+
+	local amount = 0
+	math.randomseed(os.time())
+	while true do
+		local x = math.random(1, columns)
+		local y = math.random(1, rows)
+
+		-- TODO: Would be nice to avoid placing any near the first click
+		-- So a bit of a sweep can happen on the first go
+		-- which is more informative for the player
+		if board[x][y] == nil and not (x == mv_x and y == mv_y) then
+			board[x][y] = 'M'
+			amount = amount + 1
 		end
+		if amount == mines then break end
 	end
-	return simple_board, win
+	board.mode = mode
+	board.columns = columns
+	board.rows = rows
+
+	return M.sweep_cell(mv_x, mv_y)
+end
+
+--- Toggle the flag for a cell.
+-- @param x horizontal coordinate.
+-- @param y vertical coordinate.
+-- @return Plottable board.
+function M.toggle_flag(x, y)
+	if type(board[x][y]) == 'number' then return get_board(false) end
+	if board[x][y] == 'M' then
+		board[x][y] = 'FM'
+	elseif board[x][y] == 'F' then
+		board[x][y] = nil
+	elseif board[x][y] == 'FM' then
+		board[x][y] = 'M'
+	else -- must be a nil cell
+		board[x][y] = 'F'
+	end
+	return get_board(false)
 end
 
 return M
