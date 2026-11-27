@@ -1,4 +1,5 @@
---- Lua Minesweeper - LÖVE Platform
+-- Copyright 2025-2026 Jamie Drinkell. MIT LICENSE.
+--- LÖVE platform implementation for Lua Minesweeper.
 --
 -- You will need LÖVE installed, download the runner for your
 -- platform from the website: <https://love2d.org/>
@@ -12,7 +13,14 @@
 -- - Intermediate: 24px
 -- - Expert: 20px
 --
--- TODO: Adapt to mobile with 640x960 resolution.
+-- ## Credits
+--
+-- - The [LÖVE](https://www.love2d.org) developers.
+--
+-- ## TODO
+--
+-- - Adapt to mobile with 640x960 resolution.
+
 -- @script love
 
 local swpr = require('logic')
@@ -20,12 +28,7 @@ local cell_imgs, start_menu, arrow
 local mode, size, scale = 0, 48
 local columns, rows, board, situation, hover_x, hover_y
 
-local function draw_menu()
-	love.graphics.draw(start_menu)
-	love.graphics.draw(arrow, 165, 148 + mode)
-end
-
-local function draw_game()
+function game_draw()
 	local image
 	local centering = (640 - (columns * size)) / 2
 	for k = 0, rows - 1 do
@@ -51,33 +54,6 @@ local function draw_game()
 	end
 end
 
-function menu_mousemoved(x, y, dx, dy, istouch)
-	if y < 230 then
-		mode = 0
-	elseif y < 330 then
-		mode = 105
-	else
-		mode = 205
-	end
-end
-
-function menu_mousepressed(x, y, button, istouch, presses)
-	if y < 230 then
-		mode = 'b'
-	elseif y < 330 then
-		mode = 'i'
-	else
-		mode = 'e'
-	end
-	size = mode == 'b' and 48 or mode == 'i' and 24 or 20
-	scale = mode == 'b' and 1 or mode == 'i' and 0.5 or 0.4166
-	situation = 'start'
-	columns, rows, board = swpr.get_details(mode)
-	love.draw = draw_game
-	love.mousemoved = game_mousemoved
-	love.mousepressed = game_mousepressed
-end
-
 function game_mousemoved(x, y, dx, dy, istouch)
 	if situation == 'lost' or situation == true or y < 448 - (size * rows) then return end
 	local centering = (640 - (columns * size)) / 2
@@ -100,6 +76,38 @@ function game_mousepressed(x, y, button, istouch, presses)
 	elseif button == 2 then
 		if situation ~= 'start' then board, situation = swpr.toggle_flag(grid_x, grid_y) end
 	end
+end
+
+function menu_draw()
+	love.graphics.draw(start_menu)
+	love.graphics.draw(arrow, 165, 148 + mode)
+end
+
+function menu_mousemoved(x, y, dx, dy, istouch)
+	if y < 230 then
+		mode = 0
+	elseif y < 330 then
+		mode = 105
+	else
+		mode = 205
+	end
+end
+
+function menu_mousepressed(x, y, button, istouch, presses)
+	if y < 230 then
+		mode = 'b'
+	elseif y < 330 then
+		mode = 'i'
+	else
+		mode = 'e'
+	end
+	size = mode == 'b' and 48 or mode == 'i' and 24 or 20
+	scale = mode == 'b' and 1 or mode == 'i' and 0.5 or 0.4166
+	situation = 'start'
+	columns, rows, board = swpr.get_details(mode)
+	love.draw = game_draw
+	love.mousemoved = game_mousemoved
+	love.mousepressed = game_mousepressed
 end
 
 love.mousemoved = menu_mousemoved
@@ -131,4 +139,4 @@ function love.load()
 	}
 end
 
-love.draw = draw_menu
+love.draw = menu_draw
