@@ -50,7 +50,6 @@
 --
 -- ## TODO/IDEAS
 -- Instead of entering, we could allow user to navigate the grid with the arrow keys?
-
 -- @script minesweeper
 
 local swpr = require('logic')
@@ -63,7 +62,7 @@ local function clear_screen()
 end
 
 --- Interpret what the user's move is.
-function interpret_move(move)
+local function interpret_move(move)
 	local x, y, action
 	if move:find('#') then
 		action = 'flag'
