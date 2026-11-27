@@ -31,7 +31,8 @@ You can build just for a specific platform by specifying the target, e.g. `make 
 
 ## License
 
-This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under the same license, apart from the following exemption(s):
+This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under the same license,
+apart from the following exemption(s):
 
 - The file "ansicolors.lua" for the Lua platform is Rob Hoelz's and Enrique García Cota's "ansicolors.lua", modified to support Windows Terminal. This modified version can be used under the original MIT license.
 
