@@ -31,26 +31,21 @@ You can build just for a specific platform by specifying the target, e.g. `make 
 
 ## License
 
-This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under the same license,
-apart from the following exemption(s):
-
-- The file "ansicolors.lua" for the Lua platform is Rob Hoelz's and Enrique García Cota's "ansicolors.lua", modified to support Windows Terminal. This modified version can be used under the original MIT license.
+This project has dependencies (e.g. Enceladus) that are GPLv3 and is hence under the same license.
+Some files are fetched externally and have their own licenses, but each one is GPL compatible.
 
 ## Platforms awaiting implementation and/or under consideration:
 
-- Adjust LÖVE version to play nice on Mobile
-- Love.js for the Web
-- MegaDrive via mdlua
-- Wii via LuafWii or Wiilove
-- Textadept
+- Make LÖVE version play nice on mobile.
+- A web option. Love.js is broken so need to consider something like Defold, Solar2D, microStudio etc.
 - Dreamcast via ANTIRUINS
-- ROBLOX
+- Wii via LuafWii or Wiilove
+- MegaDrive via mdlua
 - PSP via Lua Player Plus PSP
+- If I'm willing to look at developing my own LuaPlayer(s), I could maybe support Gamecube, PS1, N64 etc.
+- ROBLOX (as a method to target PS4/5 etc.)
+- Textadept
 - REAPER
-- PICO-8
-- (Neo)Vim
-- If I'm willing to look at developing my own LuaPlayer(s), I could maybe support PSX, N64 etc.
-- Note to self: Check out KallistiOS and its possible GC support
 
 ## Credits
 
