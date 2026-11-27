@@ -1,5 +1,5 @@
 -- ansicolors.lua v1.0.7 (2026-11)
---- Ansicolors
+
 -- Copyright (c) 2009 Rob Hoelz <rob@hoelzro.net>
 -- Copyright (c) 2011 Enrique García Cota <enrique.garcia.cota@gmail.com>
 -- Copyright (c) 2026 Jamie Drinkell <jamiedrinkell@gmail.com>
@@ -21,7 +21,6 @@
 -- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 -- THE SOFTWARE.
--- @module ansicolors
 
 --- Detect if color mode would be supported.
 -- @return truthy or falsey value whether the environment supports color sequences.

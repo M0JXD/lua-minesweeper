@@ -33,7 +33,7 @@ megadrive:
 	cd build/megadrive && npm install mdlua
 	cd build/megadrive && npx mdlua build main.lua -o minesweeper.bin
 
-.PHONY: docs update
+.PHONY: docs fetch
 
 docs:
 	ldoc --boilerplate --filter external/markdowndoc.ldoc src/logic.lua -- --title="Lua Minesweeper Logic Implementation" --single > build/LOGIC.md
@@ -42,11 +42,11 @@ docs:
 	ldoc --boilerplate --filter external/markdowndoc.ldoc src/ps2/minesweeper.lua -- --title="Lua Minesweeper PS2 Platform" --single > build/ps2/PLAYSTATION_2.md
 
 # Grab latest external files.
-update:
+fetch:
 	# Markdown Filter for LDoc.
 	curl -L -s --output-dir external -O https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
 	# Ansicolors
-	#curl -s -O  https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
+	curl -L -s --output-dir src/lua -O https://raw.githubusercontent.com/M0JXD/ansicolors.lua/refs/heads/master/ansicolors.lua
 
 clean:
 	rm -r build
