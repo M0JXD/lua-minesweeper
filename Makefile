@@ -10,7 +10,7 @@ ps2: build/ps2 build/ps2/minesweeper/minesweeper.lua
 
 build/ps2:
 	mkdir -p build
-	wget -O ./build/enceladus.tar.gz -q https://github.com/DanielSant0s/Enceladus/releases/download/latest/Enceladus.tar.gz
+	curl -L -s -o build/enceladus.tar.gz https://github.com/DanielSant0s/Enceladus/releases/download/latest/Enceladus.tar.gz
 	tar -xzf ./build/enceladus.tar.gz -C ./build && rm ./build/enceladus.tar.gz
 	mv ./build/Enceladus ./build/ps2
 	rm -r ./build/ps2/lua_intellisense ./build/ps2/mesh ./build/ps2/pads && rm ./build/ps2/enceladus.elf
@@ -33,15 +33,20 @@ megadrive:
 	cd build/megadrive && npm install mdlua
 	cd build/megadrive && npx mdlua build main.lua -o minesweeper.bin
 
-.PHONY: docs
+.PHONY: docs update
 
 docs:
-	wget -q https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
-	ldoc --boilerplate --filter markdowndoc.ldoc src/logic.lua -- --title="Lua Minesweeper Logic Implementation" --single > src/LOGIC.md
-	ldoc --boilerplate --filter markdowndoc.ldoc src/love/main.lua -- --title="Lua Minesweeper LOVE2D Platform" --single > build/love/LOVE2D.md
-	ldoc --boilerplate --filter markdowndoc.ldoc src/lua/minesweeper.lua -- --title="Lua Minesweeper Lua Platform" --single > build/lua/LUA_CONSOLE.md
-	ldoc --boilerplate --filter markdowndoc.ldoc src/ps2/minesweeper.lua -- --title="Lua Minesweeper PS2 Platform" --single > build/ps2/PLAYSTATION_2.md
-	rm markdowndoc.lua
+	ldoc --boilerplate --filter external/markdowndoc.ldoc src/logic.lua -- --title="Lua Minesweeper Logic Implementation" --single > src/LOGIC.md
+	ldoc --boilerplate --filter external/markdowndoc.ldoc src/love/main.lua -- --title="Lua Minesweeper LOVE2D Platform" --single > build/love/LOVE2D.md
+	ldoc --boilerplate --filter external/markdowndoc.ldoc src/lua/minesweeper.lua -- --title="Lua Minesweeper Lua Platform" --single > build/lua/LUA_CONSOLE.md
+	ldoc --boilerplate --filter external/markdowndoc.ldoc src/ps2/minesweeper.lua -- --title="Lua Minesweeper PS2 Platform" --single > build/ps2/PLAYSTATION_2.md
+
+# Grab latest external files.
+update:
+	# Markdown Filter for LDoc.
+	curl -L -s --output-dir external -O https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
+	# Ansicolors
+	#curl -s -O  https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
 
 clean:
-	rm -r build docs
+	rm -r build
