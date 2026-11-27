@@ -40,12 +40,12 @@ Some files are fetched externally and have their own licenses, but each one is G
 - A web option. Love.js is broken so need to consider something like Defold, Solar2D, microStudio etc.
 - Dreamcast via ANTIRUINS
 - Wii via LuafWii or Wiilove
-- MegaDrive via mdlua
 - PSP via Lua Player Plus PSP
 - If I'm willing to look at developing my own LuaPlayer(s), I could maybe support Gamecube, PS1, N64 etc.
 - ROBLOX (as a method to target PS4/5 etc.)
 - Textadept
 - REAPER
+- MegaDrive via mdlua (preliminary checks show there are a lot of limitations)
 
 ## Credits
 
