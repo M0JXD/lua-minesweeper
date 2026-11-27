@@ -14,10 +14,9 @@
 -- ## Credits
 --
 -- - @DanielSant0s for [Enceladus](https://github.com/DanielSant0s/Enceladus).
-
 -- @script enceladus_ps2
 
-local swpr = require('minesweeper/logic')
+local swpr = require('minesweeper.logic')
 local mode, situation = 'b', 'start'
 local columns, rows, board = swpr.get_details(mode)
 local hover_x, hover_y, size = 1, 1, 48
@@ -35,7 +34,7 @@ local cell_imgs = {
 }
 
 --- Run the game.
-function game()
+local function game()
 	if Pads.check(pad, PAD_CROSS) and not Pads.check(oldpad, PAD_CROSS) then
 		if situation == 'start' then
 			board, situation = swpr.setup_game(hover_x, hover_y, mode)
@@ -86,7 +85,7 @@ function game()
 	end
 end
 
-function menu()
+local function menu()
 	Graphics.drawImage(start_menu, 0, 0)
 	Graphics.drawImage(arrow, 165, 148 + (mode == 'b' and 0 or mode == 'i' and 105 or 205))
 	if Pads.check(pad, PAD_CROSS) and not Pads.check(oldpad, PAD_CROSS) then
