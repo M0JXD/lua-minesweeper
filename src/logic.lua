@@ -8,7 +8,7 @@
 -- - Expert: 30x16 with 99 mines
 --
 -- The main board is represented by a 2D Matrix.
--- Each 'cell' contains a value reprenting what it is:
+-- Each 'cell' contains a value representing what it is:
 --
 -- Internally, these values are:
 --
