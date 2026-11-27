@@ -1,7 +1,7 @@
 -- Copyright 2025-2026 Jamie Drinkell. MIT LICENSE.
 --- Minesweeper Core Logic in Lua
 --
--- Minesweeper logic offers support for three game modes:
+-- The logic offers support for three game modes:
 --
 -- - Beginner: 8x8 with 10 mines
 -- - Intermediate: 16x16 with 40 mines
@@ -27,7 +27,7 @@
 -- - `'F'` for a flagged cell
 -- - `'M'` mines upon game completion (user must check if board contains mines)
 --
--- All functions return the simplified plottable board.
+-- All game functions return the simplified plottable board.
 -- @module minesweeper_logic
 local M = {}
 
