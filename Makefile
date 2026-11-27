@@ -36,7 +36,7 @@ megadrive:
 .PHONY: docs update
 
 docs:
-	ldoc --boilerplate --filter external/markdowndoc.ldoc src/logic.lua -- --title="Lua Minesweeper Logic Implementation" --single > src/LOGIC.md
+	ldoc --boilerplate --filter external/markdowndoc.ldoc src/logic.lua -- --title="Lua Minesweeper Logic Implementation" --single > build/LOGIC.md
 	ldoc --boilerplate --filter external/markdowndoc.ldoc src/love/main.lua -- --title="Lua Minesweeper LOVE2D Platform" --single > build/love/LOVE2D.md
 	ldoc --boilerplate --filter external/markdowndoc.ldoc src/lua/minesweeper.lua -- --title="Lua Minesweeper Lua Platform" --single > build/lua/LUA_CONSOLE.md
 	ldoc --boilerplate --filter external/markdowndoc.ldoc src/ps2/minesweeper.lua -- --title="Lua Minesweeper PS2 Platform" --single > build/ps2/PLAYSTATION_2.md
