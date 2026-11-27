@@ -1,5 +1,5 @@
 -- Copyright 2025-2026 Jamie Drinkell. MIT LICENSE.
---- Lua Minesweeper - LÖVE Platform
+--- LÖVE platform implementation for Lua Minesweeper.
 --
 -- You will need LÖVE installed, download the runner for your
 -- platform from the website: <https://love2d.org/>
@@ -18,7 +18,9 @@
 -- - The [LÖVE](https://www.love2d.org) developers.
 --
 -- ## TODO
+--
 -- - Adapt to mobile with 640x960 resolution.
+
 -- @script love
 
 local swpr = require('logic')

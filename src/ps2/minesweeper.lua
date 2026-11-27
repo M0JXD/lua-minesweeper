@@ -1,5 +1,5 @@
 -- Copyright 2025-2026 Jamie Drinkell. MIT LICENSE.
---- Enceladus (PS2) Platform
+--- Enceladus (PS2) platform implementation for Lua Minesweeper.
 --
 -- Despite the fact I think it's cool as anything that I'm able to do this for the trusty PS2, there's not much to say.
 -- Go play it! Just run the *enceladus_pkd.elf* from LaunchELF (or whatever ELF launcher you use) :)
@@ -14,6 +14,7 @@
 -- ## Credits
 --
 -- - @DanielSant0s for [Enceladus](https://github.com/DanielSant0s/Enceladus).
+
 -- @script enceladus_ps2
 
 local swpr = require('minesweeper.logic')

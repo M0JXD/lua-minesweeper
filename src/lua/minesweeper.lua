@@ -1,5 +1,5 @@
 -- Copyright 2025-2026 Jamie Drinkell. See LICENSE.
---- Lua Minesweeper - Lua Platform
+--- Lua platform implementation for Lua Minesweeper.
 --
 -- The Lua platform is a box standard Lua script to run in a Lua interpreter.
 -- It's a simple CLI program, but it is in colour no less! (should that be supported by your terminal).
@@ -49,7 +49,9 @@
 -- - Rob Hoelz and Enrique García Cota for the ansicolors library: <https://github.com/kikito/ansicolors.lua>
 --
 -- ## TODO/IDEAS
+--
 -- Instead of entering, we could allow user to navigate the grid with the arrow keys?
+
 -- @script minesweeper
 
 local swpr = require('logic')
