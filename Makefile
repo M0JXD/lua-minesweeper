@@ -28,11 +28,6 @@ love: src/love/main.lua
 	(cd build/love/src && zip -9 -r ../minesweeper.love .)
 	rm -r build/love/src
 
-megadrive:
-	mkdir -p build/megadrive
-	cd build/megadrive && npm install mdlua
-	cd build/megadrive && npx mdlua build main.lua -o minesweeper.bin
-
 .PHONY: docs fetch
 
 docs:
