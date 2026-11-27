@@ -41,9 +41,9 @@ docs:
 	ldoc --boilerplate --filter external/markdowndoc.ldoc src/lua/minesweeper.lua -- --title="Lua Minesweeper Lua Platform" --single > build/lua/LUA_CONSOLE.md
 	ldoc --boilerplate --filter external/markdowndoc.ldoc src/ps2/minesweeper.lua -- --title="Lua Minesweeper PS2 Platform" --single > build/ps2/PLAYSTATION_2.md
 
-# Grab latest external files.
+# Grab latest external files
 fetch:
-	# Markdown Filter for LDoc.
+	# Markdown filter for LDoc
 	curl -L -s --output-dir external -O https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
 	# Ansicolors
 	curl -L -s --output-dir src/lua -O https://raw.githubusercontent.com/M0JXD/ansicolors.lua/refs/heads/master/ansicolors.lua
