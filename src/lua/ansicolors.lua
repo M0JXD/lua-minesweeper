@@ -1,30 +1,32 @@
--- ansicolors.lua v1.0.7 (2026-11)
+-- Copyright 2009 Rob Hoelz, 2011 Enrique García Cota, 2026 Jamie Drinkell. See COPYING.
+--- ANSI Terminal Colors for Lua.
+--
+-- *ansicolors.lua* is a simple Lua module for printing to the console in color.
+-- This is a fork to add detection for new terminals that support ANSI codes (e.g. Windows Terminal).
+--
+-- ## Usage
+--
+-- ```lua
+-- local colors = require('ansicolors')
+-- print(colors('%{red}hello'))
+-- print(colors('%{redbg}hello%{reset}'))
+-- print(colors('%{bright red underline}hello'))
+-- ```
+--
+-- The `colors()` function ensures that color attributes are reset at each end of the generated string.
+-- If you want to generate complex strings piece-by-piece, use `colors.noReset()`,
+-- which works exactly the same but without adding the reset codes at each end of the string.
+--
+-- ## Testing
+--
+-- The original Telescope tests have been ported to Busted.
+--
+-- @module ansicolors
+local M = {}
 
--- Copyright (c) 2009 Rob Hoelz <rob@hoelzro.net>
--- Copyright (c) 2011 Enrique García Cota <enrique.garcia.cota@gmail.com>
--- Copyright (c) 2026 Jamie Drinkell <jamiedrinkell@gmail.com>
---
--- Permission is hereby granted, free of charge, to any person obtaining a copy
--- of this software and associated documentation files (the "Software"), to deal
--- in the Software without restriction, including without limitation the rights
--- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
--- copies of the Software, and to permit persons to whom the Software is
--- furnished to do so, subject to the following conditions:
---
--- The above copyright notice and this permission notice shall be included in
--- all copies or substantial portions of the Software.
---
--- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
--- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
--- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
--- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
--- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
--- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
--- THE SOFTWARE.
-
---- Detect if color mode would be supported.
--- @return truthy or falsey value whether the environment supports color sequences.
-local function colorSupport()
+--- Detect if ANSI escapes are supported.
+-- @return truthy or falsey value whether the environment supports ANSI color sequences.
+local function ansiSupport()
 	local isWindows = type(package) == 'table' and type(package.config) == 'string' and
 		package.config:sub(1, 1) == '\\'
 	if isWindows then
@@ -34,29 +36,44 @@ local function colorSupport()
 	end
 end
 
---- Color Mode Keys table.
+--- ANSI Keys.
+-- @table keys
 local keys = {
-	-- reset
-	reset = 0,
-	-- misc
-	bright = 1, dim = 2, underline = 4, blink = 5, reverse = 7, hidden = 8,
-	-- foreground colors
-	black = 30, red = 31, green = 32, yellow = 33, blue = 34, magenta = 35, cyan = 36, white = 37,
-	-- background colors
-	blackbg = 40, redbg = 41, greenbg = 42, yellowbg = 43, bluebg = 44, magentabg = 45, cyanbg = 46,
-	whitebg = 47
+	reset = 0, -- Reset any previously applied colors.
+	bright = 1, -- Make foreground color bright (bold).
+	dim = 2, -- Make foreground color dim.
+	underline = 4, -- Underline text.
+	blink = 5, -- Make text blink.
+	reverse = 7, -- Reverse foreground and background.
+	hidden = 8, -- Make text hidden.
+	black = 30, -- Set foreground to black.
+	red = 31, -- Set foreground to red.
+	green = 32, -- Set foreground to green.
+	yellow = 33, -- Set foreground to yellow.
+	blue = 34, -- Set foreground to blue.
+	magenta = 35, -- Set foreground to magenta.
+	cyan = 36, -- Set foreground to cyan.
+	white = 37, -- Set foreground to white.
+	blackbg = 40, -- Set background to black.
+	redbg = 41, -- Set background to red.
+	greenbg = 42, -- Set background to green.
+	yellowbg = 43, -- Set background to yellow.
+	bluebg = 44, -- Set background to blue.
+	magentabg = 45, -- Set background to magenta.
+	cyanbg = 46, -- Set background to cyan.
+	whitebg = 47 -- Set background to white.
 }
 
 local escapeString = string.char(27) .. '[%dm'
 
 --- Inserts the escape character to the terminal number.
--- @param terminal number to insert.
+-- @param number number to insert.
 -- @return Escape string with number added.
 local function escapeNumber(number)
 	return escapeString:format(number)
 end
 
-local supported = colorSupport()
+local supported = ansiSupport()
 
 --- Converts key to terminal escape code.
 -- @param str key to substitute with escape code.
@@ -85,11 +102,23 @@ end
 
 --- Apply terminal colors with automatic reset.
 -- @param str String with %{key} entries to color in.
--- @param  String with keys replaced for terminal sequences.
+-- @return String with keys replaced for terminal sequences.
 local function ansicolors(str)
 	str = tostring(str or '')
 	return replaceCodes('%{reset}' .. str .. '%{reset}')
 end
 
+--- Replaces %{key} codes.
+-- @function noReset
+-- @param str String with %{key} entries to color in.
+-- @return String with keys replaced for terminal sequences.
+M.noReset = replaceCodes
+
+
+--- Apply terminal colors with automatic reset (*__call* metamethod).
+-- @function __call
+-- @param str String with %{key} entries to color in.
+-- @return String with keys replaced for terminal sequences.
 return
-	setmetatable({noReset = replaceCodes}, {__call = function(_, str) return ansicolors(str) end})
+	setmetatable(M, {__call = function(_, str) return ansicolors(str) end})
+

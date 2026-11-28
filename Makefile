@@ -41,7 +41,7 @@ fetch:
 	# Markdown filter for LDoc
 	curl -L -s --output-dir external -O https://raw.githubusercontent.com/orbitalquark/textadept/refs/heads/default/scripts/markdowndoc.lua
 	# Ansicolors
-	curl -L -s --output-dir src/lua -O https://raw.githubusercontent.com/M0JXD/ansicolors.lua/refs/heads/master/ansicolors.lua
+	curl -L -s --output-dir src/lua -O https://raw.githubusercontent.com/M0JXD/ansicolors-ng/refs/heads/master/ansicolors.lua
 
 clean:
 	rm -r build
